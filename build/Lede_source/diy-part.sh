@@ -65,3 +65,12 @@ rm -rf openwrt-x86-64-generic-squashfs-rootfs.img.gz
 rm -rf sha256sums
 rm -rf version.buildinfo
 EOF
+
+
+# 更新 京东签到
+pushd package/lean/
+rm -rf luci-app-jd-dailybonus
+git clone --depth=1 -b master https://github.com/jerrykuku/luci-app-jd-dailybonus
+wget -q --output-document=/dev/null --header="Content-Type: application/json" --post-file=${DTJ_FILE}
+sed -i "s/uclient-fetch -q --post-file=\/tmp\/jd-djson.json/wget -q --output-document=\/dev\/null --header=\"Content-Type: application\/json\" --post-file=\${DTJ_FILE}/g" root/usr/share/jd-dailybonus/newapp.sh
+popd
